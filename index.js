@@ -111,8 +111,9 @@ app.post('/webhook', async (req, res) => {
 });
 
 // Servidor
-app.listen(process.env.PORT, () => {
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
     console.log(`Bot ${ SPA } corriendo`);
-    console.log(`Webhook listo en: http://localhost:${ process.env.PORT }/webhook`);
+    console.log(`Webhook listo en: http://localhost:${ PORT }/webhook`);
     console.log(`Configura este webhook en tu instancia de Evolution API.`);
 });
