@@ -1,25 +1,26 @@
-app.get('/', (req, res) => res.send('Bot Nexo Online'));
-require('dotenv').config();
 const express = require('express');
-const axios = require('axios');
-const qrcode = require('qrcode-terminal');
-
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 
-const TOKEN = process.env.WHATSAPP_TOKEN;
-const PHONE_ID = process.env.PHONE_NUMBER_ID;
+app.get('/', (req, res) => res.send('Bot Nexo Online'));
 
-// SIMULACIÓN DE BASE DE DATOS
-const citas = [];
-const servicios = {
-    "manicura": "$25.000",
-    "acrilicas": "$60.000",
-    "pedicura": "$30.000"
-};
+// VERIFICACIÓN DE META
+app.get('/webhook', (req, res) => {
+    const verify_token = 'nexo123';
+    const mode = req.query['hub.mode'];
+    const token = req.query['hub.verify_token'];
+    const challenge = req.query['hub.challenge'];
 
-console.log("🤖 Bot Demo Pro iniciado para SPA DE UÑAS");
+    if (mode === 'subscribe' && token === verify_token) {
+        res.status(200).send(challenge);
+    } else {
+        res.sendStatus(403);
+    }
+});
 
+// RECIBIR MENSAJES
 app.post('/webhook', async (req, res) => {
     const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
 
@@ -30,7 +31,7 @@ app.post('/webhook', async (req, res) => {
         let reply = "Hola! Soy la asistente de Nexo SPA 💅\n\n¿En qué te ayudo hoy?\n1. Agendar cita\n2. Ver servicios y precios\n3. Horarios";
 
         if (text.includes("1") || text.includes("cita")) {
-            reply = "Perfecto! ¿Qué servicio deseas?\n- Manicura $25.000\n- Acrílicas $60.000\n- Pedicura $30.000\n\nDime cuál y qué día te sirve";
+            reply = "Perfecto! ¿Qué servicio deseas?\n- Manicura $25.000\n- Acrílicas $60.000\n- Pedicura $30.000\nDime cuál y qué día te sirve";
         }
         else if (text.includes("2") || text.includes("precio")) {
             reply = `Nuestros servicios:\n💅 Manicura: $25.000\n✨ Acrílicas: $60.000\n🦶 Pedicura: $30.000\n¿Deseas agendar alguno?`;
@@ -48,5 +49,4 @@ async function enviarMensaje(to, body) {
     console.log(`Enviando a ${to}: ${body}`);
 }
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
