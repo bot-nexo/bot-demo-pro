@@ -1,1 +1,1 @@
-web: node bot-demo-pro.js
+web: npm start
