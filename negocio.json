@@ -1,22 +1,166 @@
-{
+
+ {
   "negocio": "SPA Relax",
-  "tipo": "spa de uñas",
+  "tipo": "Spa de uñas",
+  "descripcion": "Centro especializado en el cuidado de uñas, manos y pies con atención personalizada.",
   "ubicacion": "Andes, Antioquia",
-  "horarios": "Lunes a Sabado 9:00am - 7:00pm, Domingo 10:00am - 4:00pm",
+  "direccion": "Cll 25 # 54-12",
+  "telefono": "+57 300 123 4567",
+  "whatsapp": "+57 300 123 4567",
+  "email": "contacto@sparelax.com",
+  "horarios": {
+    "lunes_viernes": "08:00 - 19:00",
+    "sabado": "Cerrado",
+    "domingo": "Cerrado"
+  },
+  "duracion_cita_minutos": 120,
+  "horarios_disponibles": [
+    "08:00",
+    "10:00",
+    "12:00",
+    "14:00",
+    "16:00"
+  ],
   "servicios": [
-    { "nombre": "Manicura Clasica", "precio": 25000 },
-    { "nombre": "Manicura Semipermanente", "precio": 40000 },
-    { "nombre": "Pedicura Spa", "precio": 45000 },
-    { "nombre": "Unas Acrilicas", "precio": 60000 },
-    { "nombre": "Nail Art (por diseno)", "precio": 15000 },
-    { "nombre": "Tratamiento Hidratacion Manos", "precio": 30000 }
+    {
+      "nombre": "Manicura Clásica",
+      "precio": 25000,
+      "duracion_minutos": 120
+    },
+    {
+      "nombre": "Manicura Semipermanente",
+      "precio": 40000,
+      "duracion_minutos": 120
+    },
+    {
+      "nombre": "Pedicura Spa",
+      "precio": 45000,
+      "duracion_minutos": 120
+    },
+    {
+      "nombre": "Uñas Acrílicas",
+      "precio": 60000,
+      "duracion_minutos": 120
+    },
+    {
+      "nombre": "Nail Art (por diseño)",
+      "precio": 15000,
+      "duracion_minutos": 120
+    },
+    {
+      "nombre": "Tratamiento Hidratación Manos",
+      "precio": 30000,
+      "duracion_minutos": 120
+    }
   ],
   "tono": "amable, cercano y breve, usa emojis ocasionales",
   "reglas": [
     "Saluda amablemente y ayuda con servicios, precios y horarios.",
-    "Para agendar una cita, recolecta en este orden: nombre completo, servicio deseado, dia y hora.",
-    "Cuando tengas los 3 datos, confirma la cita con un resumen y dile que un asesor la confirmara en maximo 30 minutos.",
-    "Si te piden hablar con un asesor, indicallo amablemente."
+    "Cuando un cliente pregunte por disponibilidad, consulta únicamente el campo calendario.",
+    "Nunca ofrezcas horarios que aparezcan en reservadas.",
+    "Solo ofrece horarios incluidos en disponibles.",
+    "Para agendar una cita, recolecta en este orden: nombre completo, servicio deseado, día y hora.",
+    "Cuando tengas los 3 datos, confirma la cita con un resumen y dile que un asesor la confirmará en máximo 30 minutos.",
+    "Si te piden hablar con un asesor, indícalo amablemente.",
+    "No inventes horarios ni disponibilidad."
   ],
+  "calendario": {
+    "mes": "Julio",
+    "anio": 2026,
+    "dias": {
+      "2026-07-01": {
+        "reservadas": ["08:00", "14:00"],
+        "disponibles": ["10:00", "12:00", "16:00"]
+      },
+      "2026-07-02": {
+        "reservadas": ["10:00", "12:00"],
+        "disponibles": ["08:00", "14:00", "16:00"]
+      },
+      "2026-07-03": {
+        "reservadas": ["16:00"],
+        "disponibles": ["08:00", "10:00", "12:00", "14:00"]
+      },
+      "2026-07-06": {
+        "reservadas": ["08:00", "10:00", "14:00"],
+        "disponibles": ["12:00", "16:00"]
+      },
+      "2026-07-07": {
+        "reservadas": [],
+        "disponibles": ["08:00", "10:00", "12:00", "14:00", "16:00"]
+      },
+      "2026-07-08": {
+        "reservadas": ["12:00"],
+        "disponibles": ["08:00", "10:00", "14:00", "16:00"]
+      },
+      "2026-07-09": {
+        "reservadas": ["08:00", "16:00"],
+        "disponibles": ["10:00", "12:00", "14:00"]
+      },
+      "2026-07-10": {
+        "reservadas": ["10:00"],
+        "disponibles": ["08:00", "12:00", "14:00", "16:00"]
+      },
+      "2026-07-13": {
+        "reservadas": ["08:00", "10:00", "12:00"],
+        "disponibles": ["14:00", "16:00"]
+      },
+      "2026-07-14": {
+        "reservadas": [],
+        "disponibles": ["08:00", "10:00", "12:00", "14:00", "16:00"]
+      },
+      "2026-07-15": {
+        "reservadas": ["14:00"],
+        "disponibles": ["08:00", "10:00", "12:00", "16:00"]
+      },
+      "2026-07-16": {
+        "reservadas": ["08:00", "12:00"],
+        "disponibles": ["10:00", "14:00", "16:00"]
+      },
+      "2026-07-17": {
+        "reservadas": ["10:00", "14:00"],
+        "disponibles": ["08:00", "12:00", "16:00"]
+      },
+      "2026-07-20": {
+        "reservadas": [],
+        "disponibles": ["08:00", "10:00", "12:00", "14:00", "16:00"]
+      },
+      "2026-07-21": {
+        "reservadas": ["08:00"],
+        "disponibles": ["10:00", "12:00", "14:00", "16:00"]
+      },
+      "2026-07-22": {
+        "reservadas": ["10:00", "16:00"],
+        "disponibles": ["08:00", "12:00", "14:00"]
+      },
+      "2026-07-23": {
+        "reservadas": ["12:00"],
+        "disponibles": ["08:00", "10:00", "14:00", "16:00"]
+      },
+      "2026-07-24": {
+        "reservadas": ["08:00", "14:00"],
+        "disponibles": ["10:00", "12:00", "16:00"]
+      },
+      "2026-07-27": {
+        "reservadas": ["16:00"],
+        "disponibles": ["08:00", "10:00", "12:00", "14:00"]
+      },
+      "2026-07-28": {
+        "reservadas": ["08:00", "10:00"],
+        "disponibles": ["12:00", "14:00", "16:00"]
+      },
+      "2026-07-29": {
+        "reservadas": [],
+        "disponibles": ["08:00", "10:00", "12:00", "14:00", "16:00"]
+      },
+      "2026-07-30": {
+        "reservadas": ["12:00", "14:00"],
+        "disponibles": ["08:00", "10:00", "16:00"]
+      },
+      "2026-07-31": {
+        "reservadas": ["10:00"],
+        "disponibles": ["08:00", "12:00", "14:00", "16:00"]
+      }
+    }
+  },
   "no_inventar": true
 }
