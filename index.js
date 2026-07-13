@@ -1,10 +1,10 @@
 ﻿const express = require('express');
+const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 
-const SPA = process.env.NOMBRE_SPA;
 const INSTANCE = process.env.INSTANCE_NAME;
 const API_URL = process.env.EVOLUTION_API_URL;
 const API_KEY = process.env.EVOLUTION_API_KEY;
@@ -14,33 +14,41 @@ const GROQ_URL = process.env.GROQ_URL || 'https://api.groq.com/openai/v1';
 const GROQ_KEY = process.env.GROQ_API_KEY;
 const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 
+// Cargar la configuracion del negocio desde un archivo externo.
+// Para un cliente nuevo solo cambias este archivo (o apuntas CONFIG_FILE a otro).
+const CONFIG_FILE = process.env.CONFIG_FILE || 'negocio.json';
+let CONFIG;
+try {
+    let raw = fs.readFileSync(CONFIG_FILE, 'utf8');
+    if (raw.charCodeAt(0) === 0xFEFF) raw = raw.slice(1); // tolerar BOM
+    CONFIG = JSON.parse(raw);
+} catch (e) {
+    console.error(`No se pudo leer ${CONFIG_FILE}:`, e.message);
+    process.exit(1);
+}
+const SPA = CONFIG.negocio || process.env.NOMBRE_SPA;
+
 // Historial de conversacion por numero (para dar contexto a la IA)
 const historial = {};
 
-const SYSTEM_PROMPT = `Eres la asistente virtual de *${SPA}*, un spa de unas ubicado en Andes, Antioquia.
-Horarios: Lunes a Sabado 9:00am - 7:00pm, Domingo 10:00am - 4:00pm.
+function construirSystemPrompt(c) {
+    const servicios = (c.servicios || [])
+        .map(s => `- ${s.nombre}: $${Number(s.precio).toLocaleString('es-CO')}`)
+        .join('\n');
+    const reglas = (c.reglas || []).map((r, i) => `${i + 1}. ${r}`).join('\n');
+    return `Eres la asistente virtual de *${c.negocio}*, un ${c.tipo || 'negocio'} ubicado en ${c.ubicacion || ''}.
+Horarios: ${c.horarios || ''}.
 Servicios y precios:
-- Manicura Clasica: $25.000
-- Manicura Semipermanente: $40.000
-- Pedicura Spa: $45.000
-- Unas Acrilicas: $60.000
-- Nail Art (por diseno): $15.000
-- Tratamiento Hidratacion Manos: $30.000
+${servicios}
 
 Tu trabajo:
-1. Saludar amablemente y ayudar con servicios, precios y horarios.
-2. Para AGENDAR una cita, recolecta de forma conversacional y en este orden:
-   a) Nombre completo del cliente
-   b) Servicio deseado
-   c) Dia y hora que le conviene
-3. Cuando tengas los 3 datos, confirma la cita con un resumen claro y dile que
-   un asesor la confirmara en maximo 30 minutos.
-4. Si te piden hablar con un asesor, indicallo amablemente.
+${reglas}
 
 Reglas de estilo:
-- Responde en espanol, corto, cercano y con emojis ocasionales.
-- No inventes precios ni servicios que no esten listados.
+- Responde en espanol, ${c.tono || 'amable y breve'}.
+${c.no_inventar ? '- No inventes precios ni servicios que no esten en la lista.' : ''}
 - Si el cliente escribe "menu" o "reiniciar", vuelve al saludo inicial y olvida el contexto anterior.`;
+}
 
 async function enviarTexto(to, text) {
     const number = to.replace('@s.whatsapp.net', '').replace('@c.us', '');
@@ -57,7 +65,7 @@ async function preguntarIA(hist) {
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_KEY}` },
         body: JSON.stringify({
             model: GROQ_MODEL,
-            messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...hist],
+            messages: [{ role: 'system', content: construirSystemPrompt(CONFIG) }, ...hist],
             max_tokens: 400,
             temperature: 0.7
         })
@@ -112,6 +120,6 @@ app.post('/webhook', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Bot ${ SPA } (IA Groq) corriendo`);
+    console.log(`Bot ${ SPA } (IA Groq) corriendo con config: ${CONFIG_FILE}`);
     console.log(`Webhook listo en: http://localhost:${ PORT }/webhook`);
 });
